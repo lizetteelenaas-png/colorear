@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 Color by Number Game</title>
+<style>
+  body {
+    font-family: "Comic Sans MS", cursive;
+    background: linear-gradient(to bottom right, #f8e8ff, #e6f7ff);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  h1 {
+    color: #6a0572;
+    text-shadow: 1px 1px white;
+    margin: 15px 0 5px;
+  }
+
+  .game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .svg-container {
+    background: #fff;
+    border: 4px dashed #ccc;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+
+  svg {
+    width: 500px;
+    height: auto;
+    cursor: pointer;
+  }
+
+  .palette {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fffdf8;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  }
+
+  .color {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.2s;
+  }
+
+  .color:hover {
+    transform: scale(1.1);
+  }
+
+  .swatch {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #999;
+  }
+
+  .selected {
+    border: 3px solid #6a0572;
+  }
+
+  #message {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #ff69b4;
+    font-weight: bold;
+  }
+
+  .end-screen {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .end-screen h2 {
+    color: #6a0572;
+    font-size: 2em;
+  }
+
+  .play-again {
+    background: #6a0572;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 25px;
+    border: none;
+    margin-top: 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .play-again:hover {
+    background: #9a2cbf;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎨 Color by Number</h1>
+<p>Choose a color, then click on the matching number to paint!</p>
+
+<div class="game-container">
+  <div class="svg-container" id="svgContainer">
+    <!-- Aquí se carga el SVG -->
+    <object id="coloringSVG" data="emotion-coloring.svg" type="image/svg+xml"></object>
+  </div>
+
+  <div class="palette" id="palette"></div>
+</div>
+
+<div id="message"></div>
+
+<div class="end-screen" id="endScreen">
+  <h2>🌈 Excellent job!</h2>
+  <p>You finished coloring beautifully!</p>
+  <button class="play-again" onclick="location.reload()">🔄 Play Again</button>
+</div>
+
+<script>
+const pastelColors = [
+  "#FFD1DC","#FFB6C1","#FFE4B5","#FFFACD","#C1E1C1",
+  "#ADD8E6","#E6E6FA","#F5DEB3","#F0E68C","#FFDAB9"
+];
+const crayonColors = [
+  "#FF6347","#FF8C00","#FFD700","#ADFF2F","#20B2AA",
+  "#1E90FF","#9370DB","#FF69B4","#CD5C5C","#40E0D0"
+];
+
+const colors = [...pastelColors, ...crayonColors];
+let selectedColor = null;
+let paintedAreas = 0;
+let totalAreas = 0;
+
+const palette = document.getElementById("palette");
+const svgObject = document.getElementById("coloringSVG");
+const message = document.getElementById("message");
+const endScreen = document.getElementById("endScreen");
+
+// Crear paleta
+colors.forEach((color, i) => {
+  const colorDiv = document.createElement("div");
+  colorDiv.classList.add("color");
+  colorDiv.innerHTML = `<div class="swatch" style="background:${color}" data-color="${color}" data-num="${i+1}"></div> #${i+1}`;
+  colorDiv.onclick = () => selectColor(colorDiv, color);
+  palette.appendChild(colorDiv);
+});
+
+function selectColor(div, color) {
+  document.querySelectorAll(".swatch").forEach(s => s.classList.remove("selected"));
+  div.querySelector(".swatch").classList.add("selected");
+  selectedColor = color;
+  message.textContent = `Color selected: ${color}`;
+}
+
+// Cuando cargue el SVG
+svgObject.addEventListener("load", () => {
+  const svgDoc = svgObject.contentDocument;
+  const paths = svgDoc.querySelectorAll("path, rect, circle, polygon");
+
+  totalAreas = paths.length;
+  paths.forEach((p, i) => {
+    p.setAttribute("data-num", (i % colors.length) + 1);
+    p.setAttribute("fill", "#ffffff");
+    p.setAttribute("stroke", "#ccc");
+    p.setAttribute("stroke-width", "1");
+
+    // Número visible
+    const bbox = p.getBBox();
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", bbox.x + bbox.width / 2);
+    text.setAttribute("y", bbox.y + bbox.height / 2);
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("alignment-baseline", "middle");
+    text.setAttribute("font-size", "12");
+    text.setAttribute("fill", "#666");
+    text.textContent = (i % colors.length) + 1;
+    p.parentNode.appendChild(text);
+
+    // Click para colorear
+    p.addEventListener("click", () => {
+      if (!selectedColor) return;
+      const correctNum = (i % colors.length) + 1;
+      const chosenNum = colors.indexOf(selectedColor) + 1;
+      if (chosenNum === correctNum) {
+        p.setAttribute("fill", selectedColor);
+        p.style.pointerEvents = "none";
+        paintedAreas++;
+        message.textContent = "✅ Great! Keep going!";
+        if (paintedAreas === totalAreas) {
+          setTimeout(() => {
+            document.querySelector(".game-container").style.display = "none";
+            endScreen.style.display = "block";
+          }, 800);
+        }
+      } else {
+        message.textContent = "❌ That's not the right color!";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+
