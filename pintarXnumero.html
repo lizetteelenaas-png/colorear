@@ -1,157 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Color by Number – Feelings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color by Number Game - 6 Colors Personalizado</title>
 
-<style>
-    body {
-        margin: 0;
-        font-family: "Comic Sans MS", sans-serif;
-        background: linear-gradient(to bottom, #f2f7ff, #ffffff);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
-    }
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin: 0;
+            background: linear-gradient(135deg, #ffcc70, #ff8177);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    /* ----------- START SCREEN ----------- */
-    #startScreen {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #d8ecff, #ffffff);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        text-align: center;
-    }
+        /* -------------------- PANTALLA DE INICIO -------------------- */
+        #startScreen {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            max-width: 420px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.6s ease;
+        }
 
-    #startScreen h1 {
-        font-size: 2.5rem;
-        color: #4a6fa1;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px #fff;
-    }
+        #startScreen h1 {
+            font-size: 2em;
+            color: #333;
+            margin: 0;
+        }
 
-    #startScreen button {
-        font-size: 1.4rem;
-        padding: 15px 40px;
-        background: #4a90e2;
-        border: none;
-        border-radius: 20px;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+        #startBtn {
+            padding: 15px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 10px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: .2s;
+        }
 
-    #startScreen button:hover {
-        background: #3c7ac2;
-        transform: scale(1.05);
-    }
+        #startBtn:hover {
+            background: #0056b3;
+        }
 
-    /* ----------- GAME LAYOUT ----------- */
-    #gameContainer {
-        width: 90%;
-        max-width: 1100px;
-        height: 90%;
-        background: #ffffff;
-        border-radius: 15px;
-        padding: 20px;
-        display: none;
-        gap: 20px;
-        grid-template-columns: 3fr 1fr;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
+        /* -------------------- CONTENEDOR DEL JUEGO -------------------- */
+        #game-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none; /* oculto al principio */
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 0.6s ease;
+        }
 
-    #svgContainer {
-        background: #fff;
-        border: 3px solid #cbdaf1;
-        border-radius: 12px;
-        overflow: auto;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            #svgContainer {
+                height: 50vh;
+            }
 
-    /* --- Palette --- */
-    #palette {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding-right: 10px;
-    }
+            .color-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
 
-    .color-btn {
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
-        border: 2px solid #ddd;
-        cursor: pointer;
-        font-weight: bold;
-        text-align: center;
-    }
+            #restartBtn {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
 
-    .selected {
-        border: 3px solid #000;
-        transform: scale(1.05);
-    }
+        #svgContainer {
+            width: 100%;
+            height: 60vh;
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #fdfdfd;
+        }
 
-    /* ----------- COMPLETION MESSAGE ----------- */
-    #completeMessage {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        display: none;
-        animation: popIn 0.5s ease-out;
-    }
+        #svgContainer svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
 
-    @keyframes popIn {
-        from { transform: scale(0.5) translate(-50%, -50%); opacity: 0; }
-        to { transform: scale(1) translate(-50%, -50%); opacity: 1; }
-    }
+        /* PALETA */
+        #palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
 
-    #completeMessage h2 {
-        font-size: 2rem;
-        color: #4a6fa1;
-        margin-bottom: 10px;
-    }
+        .color-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: black;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 50px;
+            cursor: pointer;
+            border: 3px solid #333;
+            transition: transform .1s;
+        }
 
-    #completeMessage button {
-        background: #4a90e2;
-        padding: 12px 25px;
-        color: white;
-        border-radius: 12px;
-        border: none;
-        cursor: pointer;
-        font-size: 1.1rem;
-    }
+        .color-btn[data-num="4"],
+        .color-btn[data-num="6"] {
+            color: white;
+        }
 
-</style>
+        .color-btn:hover {
+            transform: scale(1.12);
+        }
+
+        #message {
+            font-size: 1.4em;
+            color: #d32f2f;
+            min-height: 1.5em;
+            font-weight: bold;
+        }
+
+        #message.win-message {
+            color: #4CAF50;
+        }
+
+        #restartBtn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(.95); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- ---------- START SCREEN ---------- -->
-<div id="startScreen">
-    <h1>🎨 Color by Number – Feelings</h1>
-    <button onclick="startGame()">Start Coloring</button>
-</div>
+    <!-- -------------------- PANTALLA DE INICIO -------------------- -->
+    <div id="startScreen">
+        <h1>🎨 Color By Numbers</h1>
+        <p>Presiona el botón para comenzar a colorear.</p>
+        <button id="startBtn">Jugar</button>
+    </div>
 
-<!-- ---------- GAME CONTAINER ---------- -->
-<div id="gameContainer">
+    <!-- -------------------- JUEGO ORIGINAL (NO MODIFIQUÉ NADA) -------------------- -->
+    <div id="game-container">
+        <h1>🎨 Color By Numbers</h1>
+        <p>Selecciona un número de color y haz clic en la parte correspondiente del dibujo de la caja de regalo.</p>
 
-    <div id="svgContainer">
+        <div id="svgContainer">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.0" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
 <polygon data-num="6" fill="#FFFFFF" stroke="#000000" stroke-width="2" stroke-miterlimit="10" points="236.24,625.04 
@@ -365,94 +394,69 @@
 <text transform="matrix(1.2362 0 0 1 282.7378 117.7393)" font-family="'MyriadPro-Regular'" font-size="22.3339px">1</text>
 </svg>
 
+        </div>
+
+        <div id="palette">
+            <div class="color-btn" data-num="1" style="background:#ff6961">1</div>
+            <div class="color-btn" data-num="2" style="background:#f8c34a">2</div>
+            <div class="color-btn" data-num="3" style="background:#77dd77">3</div>
+            <div class="color-btn" data-num="4" style="background:#5c6bc0">4</div>
+            <div class="color-btn" data-num="5" style="background:#f39c12">5</div>
+            <div class="color-btn" data-num="6" style="background:#8e44ad">6</div>
+        </div>
+
+        <div id="message"></div>
+
+        <button id="restartBtn">🔄 Volver a jugar</button>
     </div>
 
-    <div id="palette"></div>
-</div>
-
-<!-- ----------- COMPLETION POPUP ----------- -->
-<div id="completeMessage">
-    <h2>🎉 Great job!</h2>
-    <p>You completed the picture!</p>
-    <button onclick="restartGame()">Play Again</button>
-</div>
-
 <script>
-/* ------------------ COLOR PALETTE ------------------ */
-const maxColors = 20;
-let selectedColor = null;
-let paintedZones = 0;
-let totalZones = 0;
+    /* -------------------- INICIO -------------------- */
+    document.getElementById("startBtn").addEventListener("click", () => {
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("game-container").style.display = "flex";
+    });
 
-function startGame() {
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("gameContainer").style.display = "grid";
-    setupPalette();
-    prepareSVG();
-}
+    /* -------------------- LÓGICA DEL JUEGO ORIGINAL -------------------- */
+    const paletteButtons = document.querySelectorAll(".color-btn");
+    let selectedColor = null;
 
-function restartGame() {
-    location.reload();
-}
+    paletteButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            selectedColor = btn.style.background;
+        });
+    });
 
-/* ------------------ CREATE COLOR PALETTE ------------------ */
-function setupPalette() {
-    const palette = document.getElementById("palette");
-    const colors = [
-        "#ff6b6b", "#ff9f43", "#feca57", "#48dbfb", "#1dd1a1",
-        "#5f27cd", "#341f97", "#222f3e", "#ff9ff3", "#f368e0",
-        "#ffb8b8", "#a29bfe", "#55efc4", "#ffeaa7", "#fab1a0",
-        "#81ecec", "#74b9ff", "#a3cb38", "#e84393", "#00cec9"
-    ];
+    document.querySelectorAll("[data-num]").forEach(part => {
+        part.addEventListener("click", () => {
+            if (!selectedColor) return;
 
-    for (let i = 1; i <= maxColors; i++) {
-        const btn = document.createElement("button");
-        btn.classList.add("color-btn");
-        btn.style.background = colors[i-1];
-        btn.textContent = i;
+            const correctNum = part.getAttribute("data-num");
+            const paletteNum = [...paletteButtons].find(btn => btn.style.background === selectedColor).getAttribute("data-num");
 
-        btn.onclick = () => {
-            selectedColor = i;
-            document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("selected"));
-            btn.classList.add("selected");
-        };
-
-        palette.appendChild(btn);
-    }
-}
-
-/* ------------------ PREPARE SVG ZONES ------------------ */
-function prepareSVG() {
-    const svgContainer = document.getElementById("svgContainer");
-    const svg = svgContainer.querySelector("svg");
-
-    if (!svg) {
-        alert("⚠️ ERROR: No colocaste el SVG dentro del área indicada.");
-        return;
-    }
-
-    const zones = svg.querySelectorAll("[data-num]");
-    totalZones = zones.length;
-
-    zones.forEach(zone => {
-        zone.style.fill = "#ffffff";
-        zone.style.stroke = "#999";
-        zone.style.cursor = "pointer";
-
-        zone.addEventListener("click", () => {
-            const n = parseInt(zone.getAttribute("data-num"));
-            if (selectedColor === n) {
-                zone.style.fill = zone.getAttribute("data-color");
-                paintedZones++;
-
-                if (paintedZones === totalZones) {
-                    document.getElementById("completeMessage").style.display = "block";
-                }
+            if (correctNum === paletteNum) {
+                part.style.fill = selectedColor;
+                part.removeAttribute("data-num");
+                checkWin();
+            } else {
+                document.getElementById("message").textContent = "❌ Color incorrecto";
+                setTimeout(() => document.getElementById("message").textContent = "", 800);
             }
         });
     });
-}
 
+    function checkWin() {
+        if (document.querySelectorAll("[data-num]").length === 0) {
+            document.getElementById("message").textContent = "🎉 ¡Felicidades, completaste el dibujo!";
+            document.getElementById("message").classList.add("win-message");
+            document.getElementById("restartBtn").style.display = "inline-block";
+        }
+    }
+
+    /* -------------------- REINICIAR -------------------- */
+    document.getElementById("restartBtn").addEventListener("click", () => {
+        location.reload();
+    });
 </script>
 
 </body>
