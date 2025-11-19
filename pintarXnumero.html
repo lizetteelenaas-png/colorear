@@ -3,87 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Color By Number - Cute Edition</title>
+<title>Color By Number</title>
 
 <style>
     body {
-        font-family: "Comic Sans MS", sans-serif;
-        background: linear-gradient(135deg, #a8edea, #fed6e3);
+        font-family: "Comic Sans MS";
+        background: #e8f6f8;
         margin: 0;
         display: flex;
         justify-content: center;
-        align-items: center;
-        min-height: 100vh;
         padding: 20px;
     }
 
-    /* ---------------- PANTALLA DE INICIO ---------------- */
-    #startScreen {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 25px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-        text-align: center;
-        width: 90%;
-        max-width: 420px;
-        animation: fadeIn .8s ease;
-    }
-
-    #startScreen h1 {
-        margin: 0;
-        font-size: 2.2em;
-        color: #444;
-    }
-
-    #startBtn {
-        margin-top: 20px;
-        padding: 15px 35px;
-        background: #ff7eb3;
-        border: none;
-        border-radius: 15px;
-        color: white;
-        font-size: 1.3em;
-        cursor: pointer;
-        transition: .2s;
-    }
-
-    #startBtn:hover {
-        transform: scale(1.08);
-        background: #ff5f9e;
-    }
-
-    /* ---------------- CONTENEDOR DEL JUEGO ---------------- */
     #game-container {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        background: #ffffffcc;
-        padding: 25px;
-        border-radius: 25px;
         width: 95%;
-        max-width: 750px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.15);
-        animation: fadeIn .8s ease;
+        max-width: 850px;
+        background: white;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        text-align: center;
     }
 
     h2 {
-        margin: 10px 0 20px;
-        font-size: 1.8em;
+        margin-top: 0;
+        font-size: 2em;
         color: #333;
     }
 
-    /* ----------- SVG ------------ */
+    /* Contenedor del SVG - ahora RESPONSIVO */
     #svgContainer {
         width: 100%;
-        max-width: 500px;
-        height: 330px;
+        max-width: 700px;
+        height: auto;
         border: 3px dashed #aaa;
         border-radius: 15px;
+        margin: 0 auto;
         background: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
     }
 
     #svgContainer svg {
@@ -91,52 +47,43 @@
         height: auto;
     }
 
-    /* ----------- PALETA EN CÍRCULOS ----------- */
+    /* PALETA circular */
     #palette {
         margin-top: 20px;
         display: flex;
         justify-content: center;
-        gap: 15px;
+        gap: 18px;
         flex-wrap: wrap;
-        max-width: 400px;
     }
 
     .color-btn {
-        width: 55px;
-        height: 55px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         border: 4px solid #333;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.2em;
+        font-size: 1.3em;
         font-weight: bold;
         cursor: pointer;
-        transition: transform .15s ease;
-        color: #000;
+        transition: transform .15s;
     }
 
     .color-btn:hover {
         transform: scale(1.15);
     }
 
-    /* ----------- MENSAJE ----------- */
     #message {
         margin-top: 15px;
-        font-size: 1.3em;
+        font-size: 1.4em;
         height: 1.4em;
         font-weight: bold;
-        text-align: center;
     }
 
-    #message.win-message {
-        color: #2ecc71;
-    }
-
-    /* ----------- BOTÓN REINICIAR ----------- */
     #restartBtn {
         margin-top: 20px;
-        padding: 12px 26px;
+        padding: 12px 25px;
         background: #4a90e2;
         color: white;
         border: none;
@@ -144,36 +91,18 @@
         font-size: 1.2em;
         cursor: pointer;
         display: none;
-        transition: .2s;
-    }
-
-    #restartBtn:hover {
-        transform: scale(1.08);
-        background: #3178c6;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(.92); }
-        to   { opacity: 1; transform: scale(1); }
     }
 </style>
 </head>
 
 <body>
 
-<!-- ---------------- PANTALLA DE INICIO ---------------- -->
-<div id="startScreen">
-    <h1>🎨 Color By Number</h1>
-    <p>Click to begin coloring the cute picture!</p>
-    <button id="startBtn">Start</button>
-</div>
-
-<!-- ---------------- JUEGO ---------------- -->
 <div id="game-container">
+
     <h2>🎨 Color the Picture</h2>
 
     <div id="svgContainer">
-<?xml version="1.0" encoding="utf-8"?>
+        <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.0" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
@@ -391,67 +320,60 @@
     </div>
 
     <div id="palette">
-        <div class="color-btn" data-num="1" style="background:#ff6961">1</div>
-        <div class="color-btn" data-num="2" style="background:#f8c34a">2</div>
-        <div class="color-btn" data-num="3" style="background:#77dd77">3</div>
-        <div class="color-btn" data-num="4" style="background:#5c6bc0;color:white">4</div>
-        <div class="color-btn" data-num="5" style="background:#f39c12">5</div>
-        <div class="color-btn" data-num="6" style="background:#8e44ad;color:white">6</div>
+        <div class="color-btn" data-color="#8B4513" data-num="1" style="background:#8B4513">1</div>
+        <div class="color-btn" data-color="#FFB6C1" data-num="2" style="background:#FFB6C1">2</div>
+        <div class="color-btn" data-color="#FAD4B3" data-num="3" style="background:#FAD4B3">3</div>
+        <div class="color-btn" data-color="#4A6EA9" data-num="4" style="background:#4A6EA9;color:white">4</div>
+        <div class="color-btn" data-color="#FFD54F" data-num="5" style="background:#FFD54F">5</div>
+        <div class="color-btn" data-color="#9B59B6" data-num="6" style="background:#9B59B6;color:white">6</div>
     </div>
 
     <div id="message"></div>
+    <button id="restartBtn">Play Again</button>
 
-    <button id="restartBtn">🔄 Play Again</button>
 </div>
 
 <script>
-/* ---------------- INICIO ---------------- */
-document.getElementById("startBtn").addEventListener("click", () => {
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("game-container").style.display = "flex";
-});
-
-/* ---------------- LÓGICA DEL JUEGO ---------------- */
+let selectedNumber = null;
 let selectedColor = null;
-const palette = document.querySelectorAll(".color-btn");
 
-palette.forEach(btn => {
+/* ---------------- seleccionar color ---------------- */
+document.querySelectorAll(".color-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        selectedColor = btn.style.background;
+        selectedNumber = btn.getAttribute("data-num");
+        selectedColor = btn.getAttribute("data-color");
     });
 });
 
-function attachListeners() {
-    document.querySelectorAll("[data-num]").forEach(part => {
-        part.addEventListener("click", () => {
-            if (!selectedColor) return;
+/* ---------------- activar todas las áreas del SVG ---------------- */
+function attachColoring() {
+    document.querySelectorAll("[data-num]").forEach(el => {
+        el.style.cursor = "pointer";
 
-            const correct = part.getAttribute("data-num");
-            const chosen = palette
-                .find(p => p.style.background === selectedColor)
-                ?.getAttribute("data-num");
+        el.addEventListener("click", () => {
+            const correct = el.getAttribute("data-num");
 
-            if (correct === chosen) {
-                part.style.fill = selectedColor;
-                part.removeAttribute("data-num");
-                checkWin();
+            if (correct === selectedNumber) {
+                el.style.fill = selectedColor;
+                el.removeAttribute("data-num"); // ya pintado
+                checkCompleted();
             }
         });
     });
 }
 
-function checkWin() {
+/* ---------------- ganar ---------------- */
+function checkCompleted() {
     if (document.querySelectorAll("[data-num]").length === 0) {
-        const msg = document.getElementById("message");
-        msg.textContent = "🎉 Great Job! You finished!";
-        msg.classList.add("win-message");
-        document.getElementById("restartBtn").style.display = "block";
+        document.getElementById("message").textContent = "🎉 Excellent job!";
+        document.getElementById("restartBtn").style.display = "inline-block";
     }
 }
 
 document.getElementById("restartBtn").onclick = () => location.reload();
 
-attachListeners();
+/* Esperar a que el SVG se cargue antes de activar eventos */
+setTimeout(attachColoring, 500);
 </script>
 
 </body>
